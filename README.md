@@ -8,7 +8,8 @@ runs without dependencies inside of GitHub actions. You store your CA's private 
 repository secret, and signed certificates are stored as workflow run artifacts.
 
 > [!IMPORTANT]  
-> Before continuing, fork this repository into your GitHub organization.
+> Before continuing, create a new private repository in your GitHub organization using
+> this repository as a template. Click the green "Use this template" button above.
 
 If you've already completed setup, skip to the [Get a signed cert](#get-a-signed-cert)
 section.
