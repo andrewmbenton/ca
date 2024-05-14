@@ -1,0 +1,5 @@
+*.key
+*.pem
+*.csr
+*.crt
+*.b64

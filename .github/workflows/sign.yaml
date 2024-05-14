@@ -1,0 +1,29 @@
+name: sign
+on:
+  workflow_dispatch:
+    inputs:
+      csr:
+        description: "A base64-encoded PEM-encoded CSR"
+        type: string
+        required: true
+      days:
+        description: "Days until the certificate expires"
+        type: number
+        required: false
+        default: 30
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "${{ secrets.CA_KEY_AND_CERT }}" > ca.pem
+      - run: echo "${{ inputs.csr }}" | base64 -d | openssl x509 -req -CA ca.pem -days ${{ inputs.days }} -copy_extensions copy -ext "subjectAltName" -extfile .github/workflows/etc/ext.conf -out cert.pem
+      - id: certInfo
+        run: openssl x509 -noout -serial -in cert.pem >> "$GITHUB_OUTPUT"
+      - run: mv cert.pem ${{ steps.certInfo.outputs.serial }}.pem
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.certInfo.outputs.serial }}.pem
+          path: ${{ steps.certInfo.outputs.serial }}.pem
+          if-no-files-found: error
