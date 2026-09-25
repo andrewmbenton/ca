@@ -16,7 +16,7 @@ jobs:
   sign:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: echo "${{ secrets.CA_KEY_AND_CERT }}" > ca.pem
       - run: echo "${{ inputs.csr }}" | base64 -d | openssl x509 -req -CA ca.pem -days ${{ inputs.days }} -copy_extensions copy -ext "subjectAltName" -extfile .github/workflows/etc/ext.conf -out cert.pem
       - id: certInfo
